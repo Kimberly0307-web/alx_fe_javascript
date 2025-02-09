@@ -60,7 +60,7 @@ function createAddQuoteForm() {
 
 // Call the function to create the form when the page loads
 createAddQuoteForm();
-// script.js
+
 
 // Load quotes from local storage or use default array
 const quotes = JSON.parse(localStorage.getItem("quotes")) || [
@@ -124,6 +124,7 @@ function importFromJsonFile(event) {
     };
     fileReader.readAsText(event.target.files[0]);
 }
+document.getElementById("exportQuotes").addEventListener("click", exportQuotes);
 
 // Check for last viewed quote and display it
 const lastViewedQuote = JSON.parse(sessionStorage.getItem("lastViewedQuote"));
