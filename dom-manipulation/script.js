@@ -61,8 +61,6 @@ function createAddQuoteForm() {
 // Call the function to create the form when the page loads
 createAddQuoteForm();
 
-// script.js
-
 // Load quotes from local storage or use default array
 const quotes = JSON.parse(localStorage.getItem("quotes")) || [
     { text: "The only limit to our realization of tomorrow is our doubts of today.", category: "Motivation" },
@@ -74,6 +72,24 @@ const quotes = JSON.parse(localStorage.getItem("quotes")) || [
 function saveQuotes() {
     localStorage.setItem("quotes", JSON.stringify(quotes));
     populateCategories(); // Update categories in dropdown
+}
+
+// Function to fetch quotes from a mock server
+async function fetchQuotesFromServer() {
+    try {
+        const response = await fetch("https://jsonplaceholder.typicode.com/posts?_limit=5"); // Simulated API endpoint
+        const data = await response.json();
+        const newQuotes = data.map(post => ({ text: post.title, category: "Server" }));
+        quotes.push(...newQuotes);
+        saveQuotes();
+    } catch (error) {
+        console.error("Error fetching quotes from server:", error);
+    }
+}
+
+// Function to sync quotes periodically
+function syncQuotes() {
+    setInterval(fetchQuotesFromServer, 30000); // Fetch new quotes every 30 seconds
 }
 
 // Function to display a random quote
@@ -182,4 +198,5 @@ if (lastViewedQuote) {
 // Initialize categories on page load
 populateCategories();
 
-
+// Start syncing quotes with the server
+syncQuotes();
