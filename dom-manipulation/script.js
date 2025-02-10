@@ -60,6 +60,7 @@ function createAddQuoteForm() {
 
 // Call the function to create the form when the page loads
 createAddQuoteForm();
+
 // Load quotes from local storage or use default array
 const quotes = JSON.parse(localStorage.getItem("quotes")) || [
     { text: "The only limit to our realization of tomorrow is our doubts of today.", category: "Motivation" },
@@ -86,6 +87,7 @@ async function fetchQuotesFromServer() {
         const newQuotes = data.map(post => ({ text: post.title, category: "Server" }));
         quotes.push(...newQuotes);
         saveQuotes();
+        console.log("Quotes synced with server!");
     } catch (error) {
         console.error("Error fetching quotes from server:", error);
     }
@@ -204,3 +206,5 @@ populateCategories();
 
 // Start syncing quotes with the server
 syncQuotes();
+
+ 
