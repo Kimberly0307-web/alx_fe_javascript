@@ -60,7 +60,6 @@ function createAddQuoteForm() {
 
 // Call the function to create the form when the page loads
 createAddQuoteForm();
-
 // Load quotes from local storage or use default array
 const quotes = JSON.parse(localStorage.getItem("quotes")) || [
     { text: "The only limit to our realization of tomorrow is our doubts of today.", category: "Motivation" },
