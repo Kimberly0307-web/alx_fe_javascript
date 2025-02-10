@@ -60,6 +60,7 @@ function createAddQuoteForm() {
 
 // Call the function to create the form when the page loads
 createAddQuoteForm();
+
 // script.js
 
 // Load quotes from local storage or use default array
@@ -135,7 +136,7 @@ function importFromJsonFile(event) {
 
 // Function to populate categories dynamically in the dropdown
 function populateCategories() {
-    const categorySelect = document.getElementById("quoteCategory");
+    const categorySelect = document.getElementById("categoryFilter");
     categorySelect.innerHTML = "<option value=''>All Categories</option>";
     const uniqueCategories = [...new Set(quotes.map(q => q.category))];
     uniqueCategories.forEach(category => {
@@ -154,7 +155,7 @@ function populateCategories() {
 
 // Function to filter quotes based on selected category
 function filterQuotes() {
-    const selectedCategory = document.getElementById("quoteCategory").value;
+    const selectedCategory = document.getElementById("categoryFilter").value;
     localStorage.setItem("selectedCategory", selectedCategory);
     const quoteDisplay = document.getElementById("quoteDisplay");
     const filteredQuotes = selectedCategory ? quotes.filter(q => q.category === selectedCategory) : quotes;
@@ -168,7 +169,7 @@ function filterQuotes() {
     }
 }
 
-document.getElementById("quoteCategory").addEventListener("change", filterQuotes);
+document.getElementById("categoryFilter").addEventListener("change", filterQuotes);
 
 // Check for last viewed quote and display it
 const lastViewedQuote = JSON.parse(sessionStorage.getItem("lastViewedQuote"));
@@ -182,5 +183,3 @@ if (lastViewedQuote) {
 populateCategories();
 
 
-
-   
