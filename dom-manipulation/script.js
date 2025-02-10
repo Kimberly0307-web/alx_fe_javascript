@@ -60,7 +60,7 @@ function createAddQuoteForm() {
 
 // Call the function to create the form when the page loads
 createAddQuoteForm();
-
+// script.js
 
 // Load quotes from local storage or use default array
 const quotes = JSON.parse(localStorage.getItem("quotes")) || [
@@ -72,6 +72,7 @@ const quotes = JSON.parse(localStorage.getItem("quotes")) || [
 // Function to save quotes to local storage
 function saveQuotes() {
     localStorage.setItem("quotes", JSON.stringify(quotes));
+    populateCategories(); // Update categories in dropdown
 }
 
 // Function to display a random quote
@@ -132,6 +133,43 @@ function importFromJsonFile(event) {
     fileReader.readAsText(event.target.files[0]);
 }
 
+// Function to populate categories dynamically in the dropdown
+function populateCategories() {
+    const categorySelect = document.getElementById("quoteCategory");
+    categorySelect.innerHTML = "<option value=''>All Categories</option>";
+    const uniqueCategories = [...new Set(quotes.map(q => q.category))];
+    uniqueCategories.forEach(category => {
+        const option = document.createElement("option");
+        option.value = category;
+        option.textContent = category;
+        categorySelect.appendChild(option);
+    });
+    // Restore last selected category
+    const lastSelectedCategory = localStorage.getItem("selectedCategory");
+    if (lastSelectedCategory) {
+        categorySelect.value = lastSelectedCategory;
+        filterQuotes();
+    }
+}
+
+// Function to filter quotes based on selected category
+function filterQuotes() {
+    const selectedCategory = document.getElementById("quoteCategory").value;
+    localStorage.setItem("selectedCategory", selectedCategory);
+    const quoteDisplay = document.getElementById("quoteDisplay");
+    const filteredQuotes = selectedCategory ? quotes.filter(q => q.category === selectedCategory) : quotes;
+    
+    if (filteredQuotes.length === 0) {
+        quoteDisplay.innerHTML = "<p>No quotes available for this category.</p>";
+    } else {
+        const randomIndex = Math.floor(Math.random() * filteredQuotes.length);
+        const selectedQuote = filteredQuotes[randomIndex];
+        quoteDisplay.innerHTML = `<p>${selectedQuote.text} - <strong>(${selectedQuote.category})</strong></p>`;
+    }
+}
+
+document.getElementById("quoteCategory").addEventListener("change", filterQuotes);
+
 // Check for last viewed quote and display it
 const lastViewedQuote = JSON.parse(sessionStorage.getItem("lastViewedQuote"));
 if (lastViewedQuote) {
@@ -140,3 +178,9 @@ if (lastViewedQuote) {
     showRandomQuote();
 }
 
+// Initialize categories on page load
+populateCategories();
+
+
+
+   
