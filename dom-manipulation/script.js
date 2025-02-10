@@ -76,7 +76,12 @@ function saveQuotes() {
 // Function to fetch quotes from a mock server
 async function fetchQuotesFromServer() {
     try {
-        const response = await fetch("https://jsonplaceholder.typicode.com/posts?_limit=5"); // Simulated API endpoint
+        const response = await fetch("https://jsonplaceholder.typicode.com/posts?_limit=5", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }); // Simulated API endpoint
         const data = await response.json();
         const newQuotes = data.map(post => ({ text: post.title, category: "Server" }));
         quotes.push(...newQuotes);
